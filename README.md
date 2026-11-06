@@ -1,5 +1,5 @@
 # Casa do Bolo
-[Tela inicial](docs/index.png)
+![Tela inicial](docs/index.png)
 Sistema de gerenciamento interno de uma loja de bolos (TCC). Controle de **pedidos, clientes, sabores e tamanhos**, com histórico de vendas. O acesso é restrito à equipe da loja: não existe cadastro público, as contas são criadas pelo administrador.
 
 **Tecnologias:** ASP.NET Core MVC (.NET 8), Entity Framework Core 8, ASP.NET Core Identity, SQL Server.
