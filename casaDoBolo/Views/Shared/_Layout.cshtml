@@ -1,0 +1,783 @@
+﻿ <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CasaDoBolo</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/casaDoBolo.styles.css" asp-append-version="true" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #800000;
+            --secondary-color: #a0522d;
+            --hover-color: #660000;
+            --background-color: #f5f0e6;
+            --text-color: #333;
+            --light-text-color: #fff;
+            --accent-color: #ff7f50;
+            --gradient-start: #990000;
+            --gradient-end: #660000;
+        }
+
+        @@keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @@keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @@keyframes confetti {
+            0% { background-position: 0 0; }
+            100% { background-position: 500px 500px; }
+        }
+
+        @@keyframes slideInLeft {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        body {
+            background-color: var(--background-color);
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color);
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 70px;
+            display: flex;
+            flex-direction: column;
+            background-image:
+                radial-gradient(circle, var(--accent-color) 1px, transparent 1px),
+                radial-gradient(circle, var(--secondary-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            animation: confetti 120s linear infinite;
+            transition: margin-left 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        body.sidebar-open {
+            margin-left: 250px;
+        }
+
+        main {
+            flex: 1 0 auto;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Ajuste da largura do conteúdo principal */
+        .main-content {
+            width: 100%;
+            max-width: 1100px;
+            padding: 16px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .main-content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navbar-custom {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .navbar-custom.scrolled {
+            background-color: var(--primary-color);
+            backdrop-filter: blur(0);
+        }
+
+        .navbar-brand {
+            color: var(--primary-color) !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-custom.scrolled .navbar-brand {
+            color: var(--light-text-color) !important;
+        }
+
+        .navbar-brand:hover {
+            color: var(--accent-color) !important;
+            transform: scale(1.02);
+        }
+
+        .logo-image {
+            height: 40px;
+            margin-right: 12px;
+            animation: pulse 2s infinite ease-in-out;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--primary-color) !important;
+            font-weight: 500;
+            margin: 0 15px;
+            position: relative;
+            padding-bottom: 5px;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .navbar-custom.scrolled .nav-link {
+            color: var(--light-text-color) !important;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link:focus {
+            color: var(--accent-color) !important;
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link:focus::after {
+            width: 100%;
+        }
+
+        .navbar-toggler {
+            border-color: var(--primary-color);
+        }
+
+        .navbar-custom.scrolled .navbar-toggler {
+            border-color: var(--light-text-color);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgb(128, 0, 0)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .navbar-custom.scrolled .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .modern-search-form {
+            position: relative;
+            margin-left: auto;
+            margin-right: 15px;
+            max-width: 350px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 5px 15px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .modern-search-form:hover {
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+        }
+
+        .navbar-custom.scrolled .modern-search-form {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modern-search-input {
+            flex-grow: 1;
+            background-color: transparent;
+            border: none;
+            padding: 5px 10px;
+            padding-left: 30px;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            outline: none;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-custom.scrolled .modern-search-input {
+            color: var(--light-text-color);
+        }
+
+        .modern-search-input::placeholder {
+            color: rgba(128, 0, 0, 0.7);
+        }
+
+        .navbar-custom.scrolled .modern-search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .modern-search-input:focus {
+            color: var(--accent-color);
+        }
+
+        .modern-search-icon-left {
+            position: absolute;
+            left: 15px;
+            color: var(--primary-color);
+            font-size: 1rem;
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-custom.scrolled .modern-search-icon-left {
+            color: var(--light-text-color);
+        }
+
+        .modern-search-input:focus + .modern-search-icon-left {
+            color: var(--accent-color);
+        }
+
+        .modern-search-button {
+            background: transparent;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .navbar-custom.scrolled .modern-search-button {
+            color: var(--light-text-color);
+        }
+
+        .modern-search-button:hover {
+            color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        @@media (max-width: 991.98px) {
+            .modern-search-form {
+                margin-left: 0;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                max-width: none;
+            }
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1050;
+            top: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            overflow-x: hidden;
+            transition: width 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            padding-top: 60px;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+            border-right: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            background-color: var(--hover-color);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-brand-title {
+            color: var(--light-text-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-logo-image {
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        }
+
+        .sidebar-header .closebtn {
+            color: var(--light-text-color);
+            transition: transform 0.3s ease;
+            font-size: 30px;
+            line-height: 1;
+            padding: 0;
+        }
+
+        .sidebar-nav-title {
+            color: var(--light-text-color);
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 10px 25px 5px;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header .sidebar-nav-title {
+            border: none;
+            margin: 0 0 0 calc(18px + 15px);
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 0;
+        }
+
+        .sidebar a {
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: var(--light-text-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .sidebar a.animate {
+            animation: slideInLeft 0.5s ease-out forwards;
+            animation-delay: var(--animation-delay);
+        }
+
+        .sidebar a:hover {
+            color: var(--accent-color);
+            background-color: var(--hover-color);
+        }
+
+        .sidebar a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100px;
+            width: 100px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: skewX(-30deg);
+            transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .sidebar a:hover::before {
+            left: 100%;
+        }
+
+        .closebtn:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .menu-icon {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-right: 15px;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .navbar-custom.scrolled .menu-icon {
+            color: var(--light-text-color);
+        }
+
+        .menu-icon:hover {
+            color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .sidebar-brand-footer {
+            margin-top: auto;
+            padding: 20px 15px;
+            background-color: var(--hover-color);
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-brand-footer h4 {
+            color: var(--light-text-color);
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        footer {
+            flex-shrink: 0;
+            margin-top: auto;
+            background: linear-gradient(to top, var(--gradient-end), var(--primary-color));
+            color: var(--light-text-color);
+            font-family: 'Poppins', sans-serif;
+            padding: 40px 10%;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            animation: slideInUp 1s ease-out;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-section-left {
+            text-align: left;
+            align-items: flex-start;
+        }
+
+        .footer-section-right {
+            text-align: right;
+            align-items: flex-end;
+        }
+
+        .footer-section h4 {
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        footer p {
+            margin: 0;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        footer strong {
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a,
+        .email-link {
+            color: var(--light-text-color);
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .footer-links a:hover,
+        .email-link:hover {
+            color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .social {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .footer-section-left .social {
+            justify-content: flex-start;
+        }
+
+        .footer-section-right .social {
+            justify-content: flex-end;
+        }
+
+        .social-icon {
+            font-size: 1.8rem;
+            color: var(--light-text-color);
+            transition: transform 0.3s, color 0.3s;
+            position: relative;
+        }
+
+        .social-icon:hover {
+            animation: pulse 0.5s infinite;
+            color: var(--accent-color);
+        }
+
+        .social-icon:active {
+            animation: bounce 0.3s;
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+
+        .footer-bottom hr {
+            border-color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+
+        @@media (max-width: 768px) {
+            .main-content {
+                max-width: 100%;
+                padding: 12px;
+            }
+
+            footer {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-section,
+            .footer-section-left,
+            .footer-section-right {
+                text-align: center;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mySidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="sidebar-nav-title">Menu de Navegação</h4>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        </div>
+
+        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+        </a>
+
+        <a class="nav-link" asp-area="" asp-controller="Pedido" asp-action="Index">
+            <i class="fas fa-receipt"></i>
+            <span>Pedido</span>
+        </a>
+
+        <a class="nav-link" asp-area="" asp-controller="Cliente" asp-action="Index">
+            <i class="fas fa-user-friends"></i>
+            <span>Cliente</span>
+        </a>
+
+        @if (User.IsInRole("Administrador(a)"))
+        {
+            <a class="nav-link" asp-area="" asp-controller="Sabor" asp-action="Index">
+                <i class="fas fa-cookie-bite"></i>
+                <span>Sabor</span>
+            </a>
+
+            <a class="nav-link" asp-area="" asp-controller="Tamanho" asp-action="Index">
+                <i class="fas fa-birthday-cake"></i>
+                <span>Tamanho</span>
+            </a>
+
+            <a class="nav-link" asp-area="" asp-controller="AppRoles" asp-action="Index">
+                <i class="fas fa-user-tag"></i>
+                <span>Roles</span>
+            </a>
+
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">
+                <i class="fas fa-user-plus"></i>
+                <span>Novo Usuário</span>
+            </a>
+        }
+
+        <div class="sidebar-brand-footer">
+            <h4>
+                <img src="~/img/logo.png" alt="Logo" class="sidebar-logo-image" />
+                Casa Do Bolo
+            </h4>
+        </div>
+    </div>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+            <div class="container-fluid">
+                <i class="fas fa-bars menu-icon" onclick="openNav()"></i>
+
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/logo.png" alt="Casa do Bolo Logo" class="logo-image">
+                    Casa Do Bolo
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar" aria-controls="mainNavbar"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+
+                    <form class="modern-search-form" asp-controller="Home" asp-action="Search" method="get">
+                        <i class="fas fa-search modern-search-icon-left"></i>
+                        <input class="modern-search-input" type="search" placeholder="Pesquisar..."
+                               aria-label="Pesquisar" name="query">
+                    </form>
+
+                    <div class="d-flex ms-lg-4">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container main-content">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-section footer-section-left">
+            <h4>Navegação</h4>
+            <ul class="footer-links">
+                <li><a asp-area="" asp-controller="Home" asp-action="Index">Início</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidade</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Casa Do Bolo</h4>
+            <p>Rua Mario Fregonesi, 548</p>
+            <p>
+                Email |
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=casadobolojard@gmail.com"
+                   target="_blank" class="email-link">
+                    casadobolojard@gmail.com
+                </a>
+            </p>
+            <p>Segunda a Sábado: 8h - 18h</p>
+            <p>Domingo: 9h - 12h</p>
+        </div>
+
+        <div class="footer-section footer-section-right">
+            <h4>Siga-nos</h4>
+            <div class="social">
+                <a href="https://www.instagram.com/roselydestito/" target="_blank" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+
+                <a href="https://www.facebook.com/rosely.destito/?locale=pt_BR"
+                   target="_blank" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+
+                <a href="https://wa.me/5516992991887" target="_blank" class="social-icon">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr />
+            <p>&copy; 2025 Casa Do Bolo. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        function openNav() {
+            const sidebar = document.getElementById("mySidebar");
+            const sidebarLinks = document.querySelectorAll(".sidebar a");
+
+            sidebar.style.width = "250px";
+            document.body.classList.add("sidebar-open");
+
+            setTimeout(() => {
+                sidebarLinks.forEach((link, index) => {
+                    link.style.animationDelay = `${index * 0.1}s`;
+                    link.classList.add("animate");
+                });
+            }, 500);
+        }
+
+        function closeNav() {
+            const sidebar = document.getElementById("mySidebar");
+            const sidebarLinks = document.querySelectorAll(".sidebar a");
+
+            sidebar.style.width = "0";
+            document.body.classList.remove("sidebar-open");
+
+            sidebarLinks.forEach(link => {
+                link.classList.remove("animate");
+            });
+        }
+
+        $(window).scroll(function () {
+            var scroll = $(window).scrollTop();
+
+            if (scroll > 50) {
+                $(".navbar-custom").addClass("scrolled");
+            } else {
+                $(".navbar-custom").removeClass("scrolled");
+            }
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

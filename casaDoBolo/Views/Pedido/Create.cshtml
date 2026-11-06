@@ -1,0 +1,475 @@
+﻿@model casaDoBolo.Models.Pedido
+
+@{
+    ViewData["Title"] = "Novo Pedido";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+    :root {
+        --primary-color: #800000; 
+        --primary-dark: #660000; 
+        --salmon-hover: #E5A172;
+        --background-color: #f5f0e6; 
+        --text-color: #4a4a4a; 
+        --border-color: #e0e0e0; 
+        --danger-color: #dc3545; 
+        --warning-color: #ffc107; 
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        min-height: 100vh;
+        margin: 0;
+        padding-top: 20px;
+    }
+
+    .form-container {
+        padding: 40px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        border-top: 5px solid var(--primary-color);
+        max-width: 600px;
+        width: 100%;
+        margin: 60px auto 40px auto;
+        position: relative;
+    }
+
+        .form-container h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+    .form-group label, .form-label {
+        color: var(--text-color);
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control, .form-select {
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        padding: 12px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        color: var(--text-color);
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(128, 0, 0, 0.25);
+        }
+
+    .btn-custom {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 12px 25px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: color 0.3s, transform 0.2s, background-color 0.3s;
+        font-size: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        border: none;
+    }
+
+        .btn-custom:hover {
+            background-color: var(--primary-dark);
+            color: var(--salmon-hover);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+    .btn-alert-secondary {
+        background-color: #ffffff; 
+        color: var(--primary-color); 
+        font-weight: 600;
+        border: 2px solid var(--primary-color); 
+        padding: 12px 25px;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+        .btn-alert-secondary:hover {
+            background-color: var(--primary-color); 
+            color: #ffffff; 
+            text-decoration: none;
+        }
+
+    .btn-alert-confirm {
+        background-color: var(--primary-color); 
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+        .btn-alert-confirm:hover {
+            background-color: var(--primary-dark); 
+            color: white;
+        }
+
+    .btn-alert-ok {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 12px 40px; 
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+        .btn-alert-ok:hover {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+
+
+    .btn-secondary-custom {
+        background-color: #f5f5f5;
+        color: #666;
+        border: 1px solid #ddd;
+        padding: 12px 25px;
+        font-weight: 600;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background-color 0.3s, color 0.3s;
+        font-size: 1rem;
+        text-transform: uppercase;
+    }
+
+        .btn-secondary-custom:hover {
+            background-color: #e0e0e0;
+            color: #333;
+            text-decoration: none;
+        }
+
+    .text-danger {
+        font-size: 0.85em;
+        color: var(--danger-color);
+        font-weight: 500;
+    }
+
+    #Alerta48h, #AlertaHorario {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(245, 240, 230, 0.95);
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+    }
+
+        #Alerta48h.visible, #AlertaHorario.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+    .alerta-box {
+        padding: 35px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        background-color: #ffffff;
+        border: 4px solid var(--primary-color); /* Borda Vinho Bordô */
+        max-width: 90%;
+        width: 450px;
+        animation: pulse 0.6s ease-out;
+    }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(0.98);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .alerta-box h2 {
+        color: var(--primary-color);
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 15px;
+        font-size: 1.8rem;
+    }
+
+    .alerta-box p {
+        font-size: 1.05rem;
+        color: var(--text-color);
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .alerta-box .gap-3 {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-md-7 mx-auto">
+        <div class="form-container">
+
+            <div id="Alerta48h" style="display: none;">
+                <div class="alerta-box">
+                    <h2>ATENÇÃO: Prazo Curto para Retirada</h2>
+                    <p>A data de retirada selecionada é em menos de <b>48 horas</b>. Recomendamos um prazo de <b>2 dias</b> para o preparo do pedido.</p>
+                    <p>Deseja <b>CONFIRMAR</b> o pedido mesmo assim, aceitando que o prazo pode ser <b>insuficiente</b>?</p>
+                    <div class="gap-3">
+                        <button type="button" class="btn btn-lg btn-alert-secondary" id="BtnCancelarAlerta48h">
+                            Alterar Data
+                        </button>
+                        <button type="button" class="btn btn-lg btn-alert-confirm" id="BtnConfirmarEnvio48h">
+                            Confirmar Pedido
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="AlertaHorario" style="display: none;">
+                <div class="alerta-box">
+                    <h2>Horário Indisponível</h2>
+                    <p id="MensagemHorario"></p> 
+                    <div class="gap-3">
+                        <button type="button" class="btn btn-lg btn-alert-ok" id="BtnFecharAlertaHorario">
+                            OK, Entendi
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <h1>@ViewData["Title"]</h1>
+            <hr />
+            <form asp-action="Create" method="post" id="PedidoForm">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-4">
+                    <label asp-for="DataRetirada" class="form-label">Data e Hora de Retirada</label>
+                    <input asp-for="DataRetirada" class="form-control" type="datetime-local" id="DataRetiradaInput" />
+                    <span asp-validation-for="DataRetirada" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="FormaPagamento" class="form-label">Forma de Pagamento</label>
+                    <select asp-for="FormaPagamento" class="form-select">
+                        <option value="" selected disabled>Selecione a Forma de Pagamento</option>
+                        <option value="Cartão de Crédito">Cartão de Crédito</option>
+                        <option value="Cartão de Débito">Cartão de Débito</option>
+                        <option value="Pix">Pix</option>
+                        <option value="Dinheiro Físico">Dinheiro Físico</option>
+                    </select>
+                    <span asp-validation-for="FormaPagamento" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="fk_ClienteID" class="form-label">Cliente</label>
+                    <select asp-for="fk_ClienteID" class="form-select" asp-items="ViewBag.Clientes">
+                        <option value="" selected disabled>Selecione o Cliente</option>
+                    </select>
+                    <span asp-validation-for="fk_ClienteID" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="fk_SaborID" class="form-label">Sabor do Bolo</label>
+                    <select asp-for="fk_SaborID" class="form-select" asp-items="ViewBag.Sabores">
+                        <option value="" selected disabled>Selecione o Sabor</option>
+                    </select>
+                    <span asp-validation-for="fk_SaborID" class="text-danger"></span>
+                </div>
+
+                <div class="mb-5">
+                    <label asp-for="fk_TamanhoID" class="form-label">Tamanho do Bolo</label>
+                    <select asp-for="fk_TamanhoID" class="form-select" asp-items="ViewBag.Tamanhos">
+                        <option value="" selected disabled>Selecione o Tamanho</option>
+                    </select>
+                    <span asp-validation-for="fk_TamanhoID" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn-secondary-custom">Voltar para a Lista</a>
+
+                    <button type="submit" class="btn-custom">Criar Pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var inputDataRetirada = document.getElementById('DataRetiradaInput');
+            var form = document.getElementById('PedidoForm');
+
+            var alertaContainer48h = document.getElementById('Alerta48h');
+            var btnConfirmarEnvio48h = document.getElementById('BtnConfirmarEnvio48h');
+            var btnCancelarAlerta48h = document.getElementById('BtnCancelarAlerta48h');
+
+            var alertaContainerHorario = document.getElementById('AlertaHorario');
+            var mensagemHorario = document.getElementById('MensagemHorario');
+            var btnFecharAlertaHorario = document.getElementById('BtnFecharAlertaHorario');
+
+            var isForcedSubmit = false;
+
+
+            if (inputDataRetirada) {
+
+                function pad(number) {
+                    return number < 10 ? '0' + number : number;
+                }
+
+                var now = new Date();
+                now.setMinutes(now.getMinutes() + 1);
+
+                var year = now.getFullYear();
+                var month = pad(now.getMonth() + 1);
+                var day = pad(now.getDate());
+                var hours = pad(now.getHours());
+                var minutes = pad(now.getMinutes());
+
+                var minDateTime = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+
+                inputDataRetirada.setAttribute('min', minDateTime);
+            }
+
+            
+            function isHorarioValido(dateTimeValue) {
+                if (!dateTimeValue) return false;
+
+                var dataSelecionada = new Date(dateTimeValue);
+                var diaSemana = dataSelecionada.getDay();
+                var hora = dataSelecionada.getHours();
+                var minuto = dataSelecionada.getMinutes();
+
+                var horaDecimal = hora + minuto / 60;
+
+                if (diaSemana >= 1 && diaSemana <= 5) {
+                    if (horaDecimal >= 8 && horaDecimal < 18) {
+                        return true;
+                    }
+                }
+                else if (diaSemana === 6 || diaSemana === 0) {
+                    if (horaDecimal >= 8 && horaDecimal < 12) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+
+            function exibirAlerta(container, mensagem) {
+                if (mensagem && container.id === 'AlertaHorario') {
+                    mensagemHorario.innerHTML = mensagem;
+                }
+                container.style.display = 'flex';
+                setTimeout(function () {
+                    container.classList.add('visible');
+                }, 10);
+            }
+
+            function esconderAlerta(container) {
+                container.classList.remove('visible');
+                setTimeout(function () {
+                    container.style.display = 'none';
+                }, 300);
+            }
+
+
+            if (form && inputDataRetirada) {
+
+                form.addEventListener('submit', function (event) {
+
+                    var selectedDateTime = inputDataRetirada.value;
+
+                    if (!selectedDateTime || isForcedSubmit) {
+                        return;
+                    }
+
+                    event.preventDefault();
+
+                    if (!isHorarioValido(selectedDateTime)) {
+
+                        var dataObj = new Date(selectedDateTime);
+                        var diaSemana = dataObj.getDay();
+
+                        var htmlMessage;
+
+                        var horarioCompleto = "Nosso horário de funcionamento é: <ul><li><b>Segunda a Sexta:</b> das 8h às 18h</li><li><b>Sábados e Domingos:</b> das 8h às 12h</li></ul>";
+
+                        if (diaSemana >= 1 && diaSemana <= 5) { 
+                            htmlMessage = `A data/hora selecionada está **fora do nosso expediente**. ${horarioCompleto} Por favor, altere sua data/hora de retirada.`;
+                        } else { 
+                            htmlMessage = `A data/hora selecionada está **fora do nosso expediente de fim de semana**. ${horarioCompleto} Por favor, altere sua data/hora de retirada.`;
+                        }
+
+                        htmlMessage = htmlMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
+                        exibirAlerta(alertaContainerHorario, htmlMessage);
+                        return; 
+                    }
+                    
+                    var dataAtual = new Date();
+                    const fortyEightHoursInMs = 48 * 60 * 60 * 1000;
+                    var limiteMinimo = dataAtual.getTime() + fortyEightHoursInMs;
+
+                    var dataSelecionada = new Date(selectedDateTime);
+
+                    if (dataSelecionada.getTime() < limiteMinimo) {
+
+                        exibirAlerta(alertaContainer48h);
+
+                    } else {
+                        isForcedSubmit = true;
+                        form.submit();
+                    }
+                });
+
+
+ 
+                btnCancelarAlerta48h.addEventListener('click', function () {
+                    esconderAlerta(alertaContainer48h);
+                });
+
+                btnConfirmarEnvio48h.addEventListener('click', function () {
+                    isForcedSubmit = true;
+                    form.submit();
+                });
+
+
+                btnFecharAlertaHorario.addEventListener('click', function () {
+                    esconderAlerta(alertaContainerHorario);
+                });
+            }
+        });
+    </script>
+}

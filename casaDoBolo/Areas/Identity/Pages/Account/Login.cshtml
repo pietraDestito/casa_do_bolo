@@ -1,0 +1,71 @@
+﻿@page
+@model LoginModel
+@{
+    Layout = "_LayoutLogin";
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    /* ... (Seu código CSS completo aqui) ... */
+
+    /* ESTE BLOCO FOI REMOVIDO PARA TIRAR A BARRA VERMELHA:
+        .text-danger.validation-summary-errors {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #dc3545;
+            background-color: #f8d7da;
+            border-radius: 5px;
+        }
+        */
+
+    /* ... (Resto do seu código CSS) ... */
+</style>
+
+<div class="login-split d-flex">
+    <div class="left-panel d-none d-md-flex align-items-center justify-content-center">
+        <img src="~/images/logo.png" alt="Casa do Bolo" class="logo-login" />
+    </div>
+
+    <div class="right-panel d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-7 col-lg-6">
+                    <h1 class="display-5 fw-bold mb-4">Faça seu login</h1>
+
+                    <form method="post">
+                        @Html.AntiForgeryToken()
+
+                        @* A DIV ABAIXO FOI REMOVIDA PARA TIRAR A BARRA VERMELHA *@
+                        @* <div asp-validation-summary="All" class="text-danger validation-summary-errors"></div> *@
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label"></label>
+                            <input asp-for="Input.Email" type="email" class="form-control form-control-lg" placeholder="E-mail" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" class="form-label"></label>
+                            <input asp-for="Input.Password" type="password" class="form-control form-control-lg" placeholder="Senha" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input asp-for="Input.RememberMe" class="form-check-input" />
+                            <label asp-for="Input.RememberMe" class="form-check-label"></label>
+                            <span asp-validation-for="Input.RememberMe" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-4">Entrar</button>
+                        </div>
+
+                        <p class="text-muted">
+                            Não tem acesso ou esqueceu a senha? Fale com o(a) administrador(a) do sistema.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

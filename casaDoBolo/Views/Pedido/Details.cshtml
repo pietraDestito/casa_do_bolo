@@ -1,0 +1,413 @@
+﻿@model casaDoBolo.Models.Pedido
+
+@{
+    ViewData["Title"] = "Detalhes do Pedido";
+}
+
+<style>
+
+        @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+                --primary-color: #800000; 
+                --salmon-hover: #E5A172; 
+                --background-color: #f5f0e6; 
+                --card-bg: #ffffff;
+                --text-color: #4a4a4a;
+                --text-detail: #2c2c2c; 
+                --border-color: #e0e0e0;
+
+                --status-entregue: #28a745; 
+                --status-pendente: #ffc107; 
+
+    }
+
+        body {
+                font-family: 'Poppins', sans-serif;
+                background-color: var(--background-color);
+                color: var(--text-color);
+                margin: 0;
+                padding-top: 50px;
+
+    }
+
+
+        @@keyframes fadeIn {
+                from
+
+    {
+                    opacity: 0;
+                    transform: translateY(-20px);
+
+    }
+
+            to {
+                    opacity: 1;
+                    transform: translateY(0);
+
+    }
+
+
+    }
+
+
+        .center-wrapper {
+                display: flex;
+                justify-content: center;
+                margin-top: 50px;
+                margin-bottom: 50px;
+                padding: 0 20px;
+                animation: fadeIn 1s ease-out;
+
+    }
+
+
+        .card-custom {
+                max-width: 650px;
+                width: 100%;
+                background-color: var(--card-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+
+    }
+
+        .card-header-custom {
+                background-color: var(--primary-color);
+                color: #fff;
+                padding: 25px;
+                text-align: center;
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+                font-family: 'Playfair Display', serif;
+
+    }
+
+            .card-header-custom h2 {
+                    margin: 0;
+                    font-weight: 700;
+                    font-size: 2rem;
+                    text-transform: uppercase;
+
+    }
+
+
+        .card-body-custom {
+                padding: 30px;
+
+    }
+
+
+        .dl-label {
+                font-weight: 700; 
+                color: var(--primary-color);
+                margin-bottom: 5px;
+                font-size: 1.05rem;
+                padding-top: 5px;
+                padding-bottom: 0px;
+
+    }
+
+
+        .dl-value {
+                margin-bottom: 20px;
+                color: var(--text-detail); 
+                font-weight: 500;
+                border-bottom: 1px dashed var(--border-color);
+                padding-bottom: 10px;
+                padding-left: 10px;
+                padding-top: 5px;
+
+    }
+
+
+        .dl-valor-total {
+                font-size: 1.3rem;
+                font-weight: 700;
+                color: var(--status-entregue); 
+                border-bottom: none !important;
+
+    }
+
+
+        .status-badge {
+                display: inline-block;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.9rem;
+                color: #fff;
+
+    }
+
+        .status-entregue {
+                background-color: var(--status-entregue);
+
+    }
+
+        .status-pendente {
+                background-color: var(--status-pendente);
+                color: var(--text-detail);
+
+    }
+
+
+        .dl-list .row:last-child .dl-value {
+                border-bottom: none;
+                margin-bottom: 5px;
+                padding-bottom: 0;
+
+    }
+
+
+  
+        .btn-group-custom { 
+                display: flex;
+                flex-wrap: wrap; 
+                justify-content: space-between;
+                gap: 15px;
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 1px solid var(--border-color);
+
+    }
+
+        .btn-group-links { 
+                display: flex;
+                gap: 10px;
+
+    }
+
+        .btn-action-delivery {
+                background-color: var(--status-entregue);
+                color: #fff;
+                padding: 10px 25px;
+                text-decoration: none;
+                font-weight: 600;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                border: none;
+
+    }
+
+            .btn-action-delivery:hover {
+                    background-color: #1e7e34; 
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    }
+
+
+        .btn-action {
+                background-color: var(--primary-color);
+                color: #fff;
+                padding: 10px 25px;
+                text-decoration: none;
+                font-weight: 600;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                border: none;
+
+    }
+
+                .btn-action:hover {
+                        background-color: #660000;
+                        color: var(--salmon-hover);
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+
+
+        .btn-back {
+                background-color: transparent;
+                color: var(--primary-color);
+                padding: 10px 25px;
+                font-weight: 600;
+                border: 2px solid var(--primary-color);
+                border-radius: 6px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+
+    }
+
+                .btn-back:hover {
+                        background-color: var(--primary-color);
+                        color: var(--card-bg);
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+
+
+        @@media (max-width: 576px) {
+                .btn-group-custom
+
+    {
+                    flex-direction: column;
+                    gap: 15px;
+
+    }
+
+            .btn-group-links {
+                    flex-direction: column;
+
+    }
+
+            .btn-action, .btn-back, .btn-action-delivery {
+                    text-align: center;
+                    width: 100%;
+
+    }
+
+            .card-header-custom h2 {
+                    font-size: 1.5rem;
+
+    }
+
+
+    }
+</style>
+
+<div class="center-wrapper">
+    <div class="card card-custom border-0">
+
+        <div class="card-header-custom">
+            <h2>Detalhes do Pedido #@Model.PedidoID</h2>
+        </div>
+
+        <div class="card-body-custom">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+            @if (TempData["WarningMessage"] != null)
+            {
+                <div class="alert alert-warning">@TempData["WarningMessage"]</div>
+            }
+
+            <dl class="dl-list">
+                <div class="row">
+                    <dt class="col-sm-4 dl-label">@Html.DisplayNameFor(model => model.DataRetirada)</dt>
+                    <dd class="col-sm-8 dl-value">@Model.DataRetirada.ToString("dd/MM/yyyy HH:mm")</dd>
+                </div>
+
+                <div class="row">
+                    <dt class="col-sm-4 dl-label">@Html.DisplayNameFor(model => model.FormaPagamento)</dt>
+                    <dd class="col-sm-8 dl-value">@Html.DisplayFor(model => model.FormaPagamento)</dd>
+                </div>
+
+                <div class="row">
+                    <dt class="col-sm-4 dl-label">@Html.DisplayNameFor(model => model.Cliente)</dt>
+                    <dd class="col-sm-8 dl-value">@Html.DisplayFor(model => model.Cliente.Nome)</dd>
+                </div>
+
+                <div class="row">
+                    <dt class="col-sm-4 dl-label">@Html.DisplayNameFor(model => model.Sabor)</dt>
+                    <dd class="col-sm-8 dl-value">@Html.DisplayFor(model => model.Sabor.NomeSabor)</dd>
+                </div>
+
+                <div class="row">
+                    <dt class="col-sm-4 dl-label">@Html.DisplayNameFor(model => model.Tamanho)</dt>
+                    <dd class="col-sm-8 dl-value">@Html.DisplayFor(model => model.Tamanho.Fatias) fatias</dd>
+                </div>
+
+                <div class="row">
+                    <dt class="col-sm-4 dl-label">@Html.DisplayNameFor(model => model.ValorTotal)</dt>
+                    <dd class="col-sm-8 dl-value dl-valor-total">
+                        @{
+                            var valorParaExibir = Model.ValorTotal > 0 ? Model.ValorTotal.ToString("C2") : (Model.Tamanho != null ? Model.Tamanho.Valor.ToString("C2") : "R$ 0,00");
+                        }
+                        @valorParaExibir
+                    </dd>
+                </div>
+
+                <div class="row">
+                    <dt class="col-sm-4 dl-label">Status:</dt>
+                    <dd class="col-sm-8 dl-value">
+                        @if (Model.Entregue)
+                        {
+                            <span class="status-badge status-entregue">Entregue</span>
+                            <span class="text-muted small ml-3"> em @Model.DataEntrega?.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-pendente">Pendente</span>
+                        }
+                    </dd>
+                </div>
+            </dl>
+
+            <div class="btn-group-custom">
+                
+                @if (!Model.Entregue)
+                {
+                    <form id="marcarEntregueForm" asp-action="MarcarEntregue" asp-route-id="@Model.PedidoID" method="post" style="display:inline-block;">
+                        <input type="hidden" name="id" value="@Model.PedidoID" />
+
+                        <button type="button" class="btn-action-delivery" onclick="confirmarEntrega(@Model.PedidoID, '@valorParaExibir')">
+                             Marcar como Entregue
+                        </button>
+
+                        @Html.AntiForgeryToken()
+                    </form>
+                }
+
+                <div class="btn-group-links">
+                    <a asp-action="Edit" asp-route-id="@Model?.PedidoID" class="btn-action">Editar Pedido</a>
+                    <a asp-action="Index" class="btn-back">Voltar para a Lista</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function confirmarEntrega(pedidoId, valor) {
+            Swal.fire({
+                title: 'Deseja confirmar que o pedido #' + pedidoId + ' foi entregue?',
+                html: 'O valor de <strong>' + valor + '</strong> será registrado como venda concluída.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745', 
+                cancelButtonColor: '#800000', 
+                confirmButtonText: 'Sim, Marcar como Entregue!',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true, 
+                customClass: {
+                    title: 'text-dark',
+                    htmlContainer: 'text-dark'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Processando...',
+                        text: 'Aguarde enquanto o pedido é finalizado.',
+                        icon: 'info',
+                        showConfirmButton: false,
+                        timer: 1500, 
+                        timerProgressBar: true,
+                        allowOutsideClick: false,
+                        willOpen: () => {
+                            document.getElementById('marcarEntregueForm').submit();
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+}

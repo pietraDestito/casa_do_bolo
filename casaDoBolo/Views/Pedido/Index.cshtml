@@ -1,0 +1,459 @@
+﻿@model IEnumerable<casaDoBolo.Models.Pedido>
+@{
+    ViewData["Title"] = "Pedidos";
+
+    decimal valorTotalPedidosPendentes = Model
+        .Where(p => p.Tamanho != null && !p.Entregue)
+        .Sum(p => p.Tamanho?.Valor ?? 0);
+
+    var pedidosPendentesOrdenados = Model
+        .Where(p => p.Tamanho != null && !p.Entregue)
+        .OrderBy(p => p.DataRetirada); 
+}
+
+<style>
+   
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+    :root {
+        --primary-color: #800000; 
+        --salmon-hover: #E5A172;
+        --background-color: #f5f0e6;
+        --card-bg: #ffffff;
+        --text-color: #4a4a4a;
+        --border-color: #e0e0e0;
+        --success-color: #28a745; 
+        --delete-color: #dc3545;
+        --darker-primary: #660000;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    h1 {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-color);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 2.8rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1.2s ease-out;
+    }
+
+    .btn-create-container {
+        margin-bottom: 40px;
+        animation: fadeIn 1.5s ease-out;
+        text-align: center;
+    }
+
+    .btn-create {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 15px 30px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+        font-size: 1.1rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-create:hover {
+            color: var(--salmon-hover);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+
+    .dashboard-metrics {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 40px;
+        padding: 0 20px;
+        animation: fadeIn 1.8s ease-out;
+        flex-wrap: wrap;
+    }
+
+    .metric-card {
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        padding: 25px 35px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        min-width: 250px;
+        border: 2px solid var(--primary-color);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .metric-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-color);
+        margin-bottom: 5px;
+        text-transform: uppercase;
+    }
+
+    .metric-value {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin: 0;
+        transition: color 0.3s ease;
+    }
+
+        .metric-value.updating {
+            animation: pulseUpdate 0.5s 3;
+        }
+
+    @@keyframes pulseUpdate {
+        0% {
+            transform: scale(1);
+            color: var(--primary-color);
+        }
+
+        50% {
+            transform: scale(1.05);
+            color: var(--success-color);
+        }
+
+        100% {
+            transform: scale(1);
+            color: var(--primary-color);
+        }
+    }
+
+
+    .drag-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; 
+        gap: 20px;
+        padding: 20px;
+        margin: 0 auto;
+        width: 95%;
+        max-width: 1400px;
+        box-sizing: border-box;
+    }
+
+    .drag-item {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-left: 5px solid var(--primary-color);
+        padding: 25px;
+        border-radius: 12px;
+        cursor: grab;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-color 0.3s ease, opacity 0.3s ease;
+        width: calc(33.333% - 14px);
+        min-width: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+        .drag-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .drag-item:active {
+            cursor: grabbing;
+            transform: scale(1.02);
+            box-shadow: 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+    .pedido-info span {
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .pedido-info p {
+        margin: 0 0 8px 0;
+        color: var(--text-color);
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    .pedido-id-destaque {
+        font-size: 1.2rem;
+        margin-bottom: 15px !important;
+    }
+
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .btn-action {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: color 0.3s, background-color 0.3s, transform 0.2s;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        flex-grow: 1;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+    }
+
+        .btn-action:hover {
+            background-color: var(--darker-primary);
+            color: var(--salmon-hover);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+    .btn-action-success {
+        background-color: var(--success-color);
+        color: white;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 6px;
+        transition: background-color 0.3s, transform 0.2s;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        flex-grow: 2;
+        border: none;
+        cursor: pointer;
+    }
+
+        .btn-action-success:hover {
+            background-color: #1e7e34;
+            transform: translateY(-2px);
+        }
+
+        .btn-action-success.loading {
+            background-color: #555;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+    @@media (max-width: 992px) {
+        .drag-item {
+            width: calc(50% - 15px);
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .drag-item {
+            width: 100%;
+        }
+    }
+
+    .swal2-success-circular-line-left,
+    .swal2-success-fix,
+    .swal2-success-circular-line-right {
+        background-color: transparent !important;
+    }
+</style>
+
+<h1>Pedidos</h1>
+
+<div class="btn-create-container">
+    <a asp-action="Create" class="btn-create">
+        <i class="fas fa-plus-circle"></i> Adicionar Pedido
+    </a>
+    <a asp-controller="Vendas" asp-action="Historico" class="btn-create" style="background-color: #3f3f3f; margin-left: 20px;">
+        <i class="fas fa-chart-line"></i> Histórico de Vendas
+    </a>
+</div>
+
+<div class="dashboard-metrics">
+    <div class="metric-card">
+        <div class="metric-title">Valor Total dos Pedidos Pendentes</div>
+        <div id="valorTotalDisplay" class="metric-value">
+            @valorTotalPedidosPendentes.ToString("C")
+        </div>
+        <p style="font-size: 0.8rem; color: #aaa; margin-top: 5px;">* Soma dos pedidos ainda não entregues</p>
+    </div>
+</div>
+
+<div id="pedidosContainer" class="drag-container">
+    @foreach (var item in pedidosPendentesOrdenados)
+    {
+        <div id="pedido-@item.PedidoID" class="drag-item"
+             data-id="@item.PedidoID"
+             data-valor="@item.Tamanho.Valor.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)">
+
+            <div class="pedido-info">
+                <p class="pedido-id-destaque">
+                    <span>Pedido #@item.PedidoID</span>
+                </p>
+
+                <p><span>Data de Retirada:</span> @Html.DisplayFor(modelItem => item.DataRetirada)</p>
+                <p><span>Forma de Pagamento:</span> @Html.DisplayFor(modelItem => item.FormaPagamento)</p>
+                <p><span>Cliente:</span> @Html.DisplayFor(modelItem => item.Cliente.Nome)</p>
+                <p><span>Sabor:</span> @Html.DisplayFor(modelItem => item.Sabor.NomeSabor)</p>
+                <p><span>Tamanho:</span> @Html.DisplayFor(modelItem => item.Tamanho.Fatias) fatias</p>
+
+                <p style="font-size: 1.2rem; font-weight: 700; color: var(--primary-color);">
+                    <span>VALOR:</span> @item.Tamanho.Valor.ToString("C")
+                </p>
+            </div>
+            <div class="btn-group">
+
+                <button type="button"
+                        class="btn-action-success marcar-entregue-btn"
+                        data-pedido-id="@item.PedidoID"
+                        title="Marcar como Entregue">
+                    <i class="fas fa-check"></i> Entregue
+                </button>
+
+                <a asp-action="Edit" asp-route-id="@item.PedidoID" class="btn-action">Editar</a>
+                <a asp-action="Details" asp-route-id="@item.PedidoID" class="btn-action">Detalhes</a>
+                <a asp-action="Delete" asp-route-id="@item.PedidoID" class="btn-action">Excluir</a>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @Html.AntiForgeryToken()
+
+    <script>
+        const valorTotalDisplay = document.getElementById('valorTotalDisplay');
+        const pedidosContainer = document.getElementById('pedidosContainer');
+        const locale = 'pt-BR';
+        const currency = 'BRL';
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+        function varColor(name) {
+            return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+        }
+
+        function formatarMoeda(valor) {
+            return parseFloat(valor).toLocaleString(locale, { style: 'currency', currency: currency });
+        }
+
+        function atualizarDashboardPendentes(valorRemovido) {
+            let valorAtual = parseFloat(valorTotalDisplay.textContent.replace(/[^\d,]/g, '').replace(',', '.'));
+
+            valorTotalDisplay.classList.add('updating');
+
+            let novoTotal = valorAtual - valorRemovido;
+            valorTotalDisplay.textContent = formatarMoeda(novoTotal);
+
+            setTimeout(() => {
+                valorTotalDisplay.classList.remove('updating');
+            }, 1500);
+        }
+
+        pedidosContainer.addEventListener('click', function (e) {
+            const button = e.target.closest('.marcar-entregue-btn');
+
+            if (button) {
+                e.preventDefault();
+
+                if (button.classList.contains('loading')) return;
+
+                const card = button.closest('.drag-item');
+                const pedidoID = button.getAttribute('data-pedido-id');
+                const valorString = card.getAttribute('data-valor');
+                const valorPedido = parseFloat(valorString);
+
+                Swal.fire({
+                    title: `Deseja confirmar que o pedido #${pedidoID} foi entregue?`,
+                    text: `O valor de ${formatarMoeda(valorPedido)} será registrado como venda concluída.`,
+
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: varColor('success-color'),
+                    cancelButtonColor: varColor('primary-color'),
+
+                    confirmButtonText: 'Confirmar Entrega',
+                    cancelButtonText: 'Voltar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        button.classList.add('loading');
+                        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando';
+
+                        fetch(`/Pedido/MarcarEntregue/${pedidoID}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'RequestVerificationToken': token
+                            },
+                            body: `id=${pedidoID}`
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    return response.text().then(text => { throw new Error(text || response.statusText); });
+                                }
+                            })
+                            .then(() => {
+
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Pedido Concluído!',
+                                    text: `O Pedido #${pedidoID} foi entregue e o valor registrado.`,
+                                    showConfirmButton: false,
+                                    timer: 1800,
+                                    timerProgressBar: true,
+                                });
+
+                                atualizarDashboardPendentes(valorPedido);
+
+                                card.style.opacity = '0';
+                                card.style.transform = 'scale(0.9)';
+
+                                setTimeout(() => {
+                                    card.remove();
+                                }, 500);
+                            })
+                            .catch(error => {
+                                Swal.fire(
+                                    'Erro!',
+                                    'Falha ao processar a entrega: ' + error.message,
+                                    'error'
+                                );
+
+                                button.classList.remove('loading');
+                                button.innerHTML = '<i class="fas fa-check"></i> Entregue';
+                            });
+                    }
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var el = document.getElementById('pedidosContainer');
+            if (el) {
+                Sortable.create(el, {
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    onEnd: function (evt) {
+                        var novaOrdem = Sortable.toArray(el);
+                        console.log("Nova ordem dos pedidos:", novaOrdem);
+                    }
+                });
+            }
+        });
+    </script>
+}

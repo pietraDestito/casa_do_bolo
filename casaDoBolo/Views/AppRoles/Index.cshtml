@@ -1,0 +1,175 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityRole>
+
+@{
+    ViewData["Title"] = "Funções";
+}
+
+<style>
+    
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+    :root {
+        --primary-color: #800000; /* Vinho principal */
+        --salmon-hover: #E5A172; /* Cor salmão/terracota para o hover do texto */
+        --background-color: #f5f0e6; /* Fundo bege suave */
+        --card-bg: #ffffff; /* Fundo do card */
+        --text-color: #4a4a4a; /* Cor padrão do texto */
+        --border-color: #e0e0e0; /* Cinza da borda */
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        margin: 0;
+        padding-top: 50px;
+    }
+    
+    .container-custom {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    h1 {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-color);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 2.8rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1.2s ease-out;
+    }
+
+    .btn-create-container {
+        margin-bottom: 40px;
+        animation: fadeIn 1.5s ease-out;
+        text-align: center;
+    }
+
+    .btn-create {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 15px 30px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        display: inline-block;
+        font-size: 1.1rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-create:hover {
+            color: var(--salmon-hover);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+
+    .card-list-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 0;
+    }
+
+    .role-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-left: 5px solid var(--primary-color);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        
+        width: calc(33.333% - 14px); 
+        min-width: 250px;
+    }
+
+        .role-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+    .role-info {
+        flex-grow: 1; 
+        margin-bottom: 0; 
+    }
+
+        .role-info strong {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .role-info p {
+            margin: 0 0 8px 0;
+            color: var(--text-color);
+            line-height: 1.5;
+            text-align: left;
+        }
+
+
+    @@media (max-width: 992px) {
+        .role-card {
+            width: calc(50% - 15px); 
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .role-card {
+            width: 100%; 
+        }
+
+        .container-custom {
+            padding: 0 10px;
+        }
+    }
+</style>
+
+<div class="container-custom">
+    <h1>Funções</h1>
+
+    <div class="btn-create-container">
+        <a asp-action="Create" class="btn-create">Criar Nova Função</a>
+    </div>
+
+    <div class="card-list-container">
+        @foreach (var item in Model)
+        {
+            <div class="role-card">
+                <div class="role-info">
+                    <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+                    <p>ID: @Html.DisplayFor(modelItem => item.Id)</p>
+                </div>
+                
+            </div>
+        }
+    </div>
+</div>

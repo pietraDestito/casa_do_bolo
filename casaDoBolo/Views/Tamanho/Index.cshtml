@@ -1,0 +1,236 @@
+﻿@model IEnumerable<casaDoBolo.Models.Tamanho>
+
+@{
+    ViewData["Title"] = "Tamanhos";
+}
+
+<style>
+    
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+    :root {
+        --primary-color: #800000; /* Vinho principal */
+        --salmon-hover: #E5A172; /* Cor salmão/terracota para o hover do texto */
+        --background-color: #f5f0e6; /* Fundo bege suave */
+        --card-bg: #ffffff; /* Fundo do card */
+        --text-color: #4a4a4a; /* Cor padrão do texto */
+        --border-color: #e0e0e0; /* Cinza da borda */
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        margin: 0;
+        padding-top: 50px;
+    }
+
+    /* Título Principal (Padronizado com o de Clientes) */
+    h1 {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-color);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 2.8rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1.2s ease-out;
+    }
+
+    .btn-create-container {
+        margin-bottom: 40px;
+        animation: fadeIn 1.5s ease-out;
+        text-align: center;
+    }
+
+    .btn-create {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 15px 30px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        display: inline-block;
+        font-size: 1.1rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-create:hover {
+            color: var(--salmon-hover);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+
+   
+
+    .drag-container {
+        display: flex; 
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        margin: 0 auto;
+        width: 95%;
+        max-width: 1000px;
+        box-sizing: border-box;
+    }
+
+    .drag-item {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-left: 5px solid var(--primary-color);
+        padding: 25px;
+        border-radius: 12px;
+        cursor: grab;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-color 0.3s ease;
+        width: calc(33.333% - 14px);
+        min-width: 300px; 
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+        .drag-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .drag-item:active {
+            cursor: grabbing;
+            transform: scale(1.02);
+            box-shadow: 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        .drag-item.sortable-ghost {
+            opacity: 0.4;
+            background-color: #ecf0f1;
+            transform: scale(0.95);
+            border-color: var(--primary-color);
+        }
+
+    .tamanho-info {
+        flex-grow: 1;
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+
+        .tamanho-info span {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .tamanho-info p {
+            margin: 0 0 8px 0;
+            color: var(--text-color);
+            text-align: left;
+        }
+
+
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: auto;
+    }
+
+    .btn-custom {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: color 0.3s, transform 0.2s;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        flex-grow: 1;
+        text-align: center;
+    }
+
+        .btn-custom:hover {
+            color: var(--salmon-hover);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+    @@media (max-width: 992px) {
+        .drag-item {
+            width: calc(50% - 15px); 
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .drag-item {
+            width: 100%; 
+            min-width: unset;
+        }
+
+        .drag-container {
+            padding: 10px;
+        }
+
+        .btn-custom {
+            padding: 8px 15px;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+
+<h1>Tamanhos</h1>
+
+<div class="btn-create-container">
+    <a asp-action="Create" class="btn-create">Criar Novo Tamanho</a>
+</div>
+
+<div id="tamanhosContainer" class="drag-container">
+    @foreach (var item in Model)
+    {
+        <div class="drag-item" data-id="@item.TamanhoID">
+            <div class="tamanho-info">
+                <p><span>Fatias:</span> @Html.DisplayFor(modelItem => item.Fatias)</p>
+                <p><span>Valor:</span> @Html.DisplayFor(modelItem => item.Valor)</p>
+            </div>
+
+            <div class="btn-group">
+                <a asp-action="Edit" asp-route-id="@item.TamanhoID" class="btn-custom">Editar</a>
+                <a asp-action="Details" asp-route-id="@item.TamanhoID" class="btn-custom">Detalhes</a>
+                <a asp-action="Delete" asp-route-id="@item.TamanhoID" class="btn-custom">Excluir</a>
+            </div>
+        </div>
+    }
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        var el = document.getElementById('tamanhosContainer');
+        var sortable = Sortable.create(el, {
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            onEnd: function (evt) {
+                var novaOrdem = sortable.toArray();
+                console.log("Nova ordem dos tamanhos:", novaOrdem);
+            }
+        });
+    });
+</script>

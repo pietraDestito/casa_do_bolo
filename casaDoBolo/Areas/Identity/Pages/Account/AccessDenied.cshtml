@@ -1,0 +1,99 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "ACESSO NEGADO";
+    Response.StatusCode = 403;
+}
+
+<style>
+    /* 1. Container Principal: Centralização Horizontal Corrigida e Posicionamento Alto */
+    .content-adjusted-center {
+        /* Centralização Flexbox */
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* ** CORREÇÃO PRINCIPAL: Garante a centralização horizontal dos itens ** */
+        text-align: center;
+        width: 100%; /* Garante que o container ocupe toda a largura */
+        /* Posicionamento Vertical */
+        padding-top: 100px;
+        min-height: calc(100vh - 150px);
+    }
+
+    /* 2. Ícone do Cadeado Animado */
+    .icon-lock-animated {
+        font-size: 6rem;
+        color: #800000;
+        display: inline-block;
+        margin-bottom: 2rem;
+        animation: pulse-icon 2s infinite ease-in-out;
+    }
+
+    /* Keyframes da Pulsação */
+    @@keyframes pulse-icon {
+        0%, 100% {
+            transform: scale(1);
+            filter: drop-shadow(0 0 5px rgba(128, 0, 0, 0.4));
+        }
+
+        50% {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 15px rgba(128, 0, 0, 0.6));
+        }
+    }
+
+
+    /* 3. Estilos do Título */
+    .text-title-focus {
+        color: #dc3545;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        margin-bottom: 0.5rem;
+        font-size: 2.5rem;
+    }
+
+    /* 4. Estilos da Mensagem Detalhada */
+    .text-detail-focus {
+        color: #343a40;
+        font-size: 1.2rem;
+        margin-bottom: 3rem;
+    }
+
+    /* 5. Estilo do Botão Principal */
+    .btn-main-action-focus {
+        background-color: #800000;
+        border-color: #800000;
+        color: white;
+        font-weight: 700;
+        padding: 0.8rem 3rem;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-main-action-focus:hover {
+            background-color: #a00000;
+            border-color: #a00000;
+        }
+
+</style>
+
+<div class="content-adjusted-center">
+
+    <div class="icon-lock-animated">
+        <i class="bi bi-lock-fill"></i>
+    </div>
+
+    <h1 class="text-title-focus">
+        ACESSO BLOQUEADO!
+    </h1>
+
+    <p class="text-detail-focus">
+        VOCÊ NÃO TEM PERMISSÃO PARA ACESSAR ESSAS INFORMAÇÕES.
+    </p>
+
+    <a href="javascript:history.back()" class="btn btn-main-action-focus btn-lg">
+        ENTENDIDO
+    </a>
+
+</div>

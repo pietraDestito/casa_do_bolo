@@ -1,0 +1,24 @@
+## Visual Studio / .NET
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.DotSettings.user
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.log
+*.tmp
+
+## Pacotes e segredos locais
+packages/
+*.nupkg
+secrets.json
+appsettings.Local.json
+
+## Sistema
+.DS_Store
+Thumbs.db

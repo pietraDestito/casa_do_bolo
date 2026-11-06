@@ -1,0 +1,246 @@
+﻿@model IEnumerable<casaDoBolo.Models.Sabor>
+
+@{
+    ViewData["Title"] = "Sabores";
+}
+
+<style>
+   
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+    :root {
+        --card-bg-container: #FCEFE0; 
+        --primary-color: #800000;
+        --salmon-hover: #E5A172;
+        --darker-primary: #660000;
+        --text-color: #4a4a4a;
+        --border-color-card: #e0e0e0;
+        --text-dark-label: #585858;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--card-bg-container); 
+        color: var(--text-color);
+        margin: 0;
+        padding-top: 50px;
+
+        
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 0 !important; 
+        margin-bottom: 0 !important; 
+    }
+
+    /* Título Principal */
+    h1 {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-color);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.8rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-create-container {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .btn-create {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 12px 25px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+        display: inline-block;
+        font-size: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-create:hover {
+            background-color: var(--darker-primary);
+            color: var(--salmon-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+
+
+
+    .drag-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        padding: 20px;
+        margin: 0 auto;
+        width: 95%;
+        max-width: 1200px;
+        box-sizing: border-box;
+        flex-grow: 1; 
+    }
+
+    .drag-item {
+        background-color: var(--card-bg-container); 
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: calc(25% - 23px);
+        min-width: 250px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+        .drag-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    /* Imagem do Sabor */
+    .sabor-foto {
+        width: 95%;
+        height: auto;
+        max-height: 200px;
+        object-fit: contain;
+        border-radius: 0;
+        display: block;
+        margin: 10px auto 15px auto;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Informações do Sabor */
+    .sabor-info {
+        flex-grow: 1;
+        margin-bottom: 20px;
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sabor-nome {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        color: var(--text-dark-label);
+        font-size: 1.1rem;
+        margin: 10px 0 5px 0;
+        line-height: 1.3;
+    }
+
+    .sabor-info p {
+        display: none;
+    }
+
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: auto;
+        width: 100%;
+    }
+
+    .btn-custom {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 8px 20px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: background-color 0.3s, transform 0.2s, opacity 0.3s, color 0.3s;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        flex-grow: 1;
+        max-width: 120px;
+        text-align: center;
+    }
+
+        .btn-custom.btn-edit, .btn-custom.btn-details, .btn-custom.btn-delete {
+            background-color: var(--primary-color);
+        }
+
+        .btn-custom:hover {
+            background-color: var(--darker-primary);
+            color: var(--salmon-hover);
+            transform: scale(1.05);
+            text-decoration: none;
+        }
+
+   
+
+    @@media (max-width: 1200px) {
+        .drag-item {
+            width: calc(33.333% - 20px);
+        }
+    }
+
+    @@media (max-width: 800px) {
+        .drag-item {
+            width: calc(50% - 25px);
+            min-width: 0;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .drag-item {
+            width: 100%;
+        }
+
+        .btn-group {
+            flex-direction: row;
+            gap: 10px;
+        }
+
+        .btn-custom {
+            flex-grow: 1;
+            max-width: none;
+        }
+    }
+</style>
+
+<h1>Sabores</h1>
+
+<div class="btn-create-container">
+    <a asp-action="Create" class="btn-create">Novo Sabor</a>
+</div>
+
+<div class="drag-container">
+    @foreach (var item in Model)
+    {
+        <div class="drag-item">
+            <div class="sabor-info">
+                <p>#@Html.DisplayFor(modelItem => item.SaborID)</p> 
+                
+                @if (item.Foto != null && item.Foto.Length > 0)
+                {
+                    var base64 = Convert.ToBase64String(item.Foto);
+                    var imgSrc = $"data:image/jpeg;base64,{base64}";
+                    <img src="@imgSrc" alt="Foto do sabor" class="sabor-foto" />
+                }
+                else
+                {
+                    <img src="~/img/placeholder-bolo.png" alt="Sem foto" class="sabor-foto" />
+                }
+                
+                <span class="sabor-nome">@Html.DisplayFor(modelItem => item.NomeSabor)</span>
+            </div>
+            
+            <div class="btn-group">
+                <a asp-action="Edit" asp-route-id="@item.SaborID" class="btn-custom btn-edit">Editar</a>
+                <a asp-action="Details" asp-route-id="@item.SaborID" class="btn-custom btn-details">Detalhes</a>
+                <a asp-action="Delete" asp-route-id="@item.SaborID" class="btn-custom btn-delete">Excluir</a>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,185 @@
+﻿@{
+    ViewData["Title"] = "Política de Privacidade";
+}
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f2f2f7;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .privacy-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 40px 30px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        border-left: 6px solid #800000; 
+    }
+
+    .privacy-container h1 {
+        font-size: 2.8rem;
+        text-align: center;
+        color: #800000;
+        margin-bottom: 30px;
+        font-weight: 700;
+    }
+
+    .privacy-container h2 {
+        font-size: 1.6rem;
+        color: #800000;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        padding-bottom: 5px;
+        border-bottom: 2px dotted #f5f0e6;
+        display: flex;
+        align-items: center;
+    }
+
+    .privacy-container h2::before {       
+        margin-right: 8px;
+    }
+
+    .privacy-container p {
+        font-size: 1rem;
+        line-height: 1.8;
+        margin-bottom: 15px;
+        text-align: justify;
+    }
+
+    .privacy-container ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 20px;
+    }
+
+    .privacy-container ul li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 10px;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .privacy-container ul li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #800000;
+        font-weight: bold;
+    }
+
+    
+    .privacy-container a {
+        color: #800000;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .privacy-container a:hover {
+        color: #a52a2a;
+        text-decoration: underline;
+    }
+
+    .privacy-container hr {
+        border: 0;
+        height: 1px;
+        background: #f5f0e6;
+        margin: 30px 0;
+    }
+
+    .privacy-box {
+        background-color: #f9f6f4;
+        border-left: 4px solid #800000;
+        padding: 15px 20px;
+        margin: 20px 0;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+     {
+        .privacy-container {
+            padding: 30px 20px;
+            margin: 20px;
+        }
+
+        .privacy-container h1 {
+            font-size: 2.2rem;
+        }
+
+        .privacy-container h2 {
+            font-size: 1.4rem;
+        }
+    }
+</style>
+
+<div class="privacy-container">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="privacy-box">
+        <p>Esta Política de Privacidade descreve como coletamos, usamos, armazenamos e protegemos os dados fornecidos pelos usuários. Nosso compromisso é garantir que suas informações sejam tratadas com total confidencialidade e segurança.</p>
+    </div>
+
+    <h2>Coleta de Informações</h2>
+    <p>Podemos coletar informações fornecidas voluntariamente, como:</p>
+    <ul>
+        <li>Nome, e-mail e telefone</li>
+        <li>Endereço de entrega ou cadastro</li>
+        <li>Informações financeiras, sempre criptografadas</li>
+        <li>Preferências e histórico de compras</li>
+    </ul>
+    <p>Também coletamos dados automaticamente para melhorar sua experiência, como endereço IP, navegador, páginas visitadas e cookies.</p>
+
+    <h2>Uso das Informações</h2>
+    <ul>
+        <li>Fornecer produtos, serviços e suporte</li>
+        <li>Personalizar a navegação e ofertas</li>
+        <li>Enviar promoções e novidades (com consentimento)</li>
+        <li>Análises estatísticas e pesquisas de satisfação</li>
+        <li>Cumprimento de obrigações legais</li>
+    </ul>
+
+    <h2>Compartilhamento de Dados</h2>
+    <p>Não vendemos ou alugamos informações pessoais. O compartilhamento ocorre somente com parceiros confiáveis ou quando exigido por lei, sempre mantendo confidencialidade.</p>
+
+    <h2>Segurança</h2>
+    <div class="privacy-box">
+        <p>Adotamos medidas como criptografia, HTTPS, backups periódicos e controle de acesso restrito. Recomendamos que você também proteja suas senhas e informações de login.</p>
+    </div>
+
+    <h2>Cookies e Tecnologias Similares</h2>
+    <p>Usamos cookies para melhorar a navegação, personalizar conteúdos e analisar o uso do site. É possível desativar cookies no navegador, mas algumas funcionalidades podem ser afetadas.</p>
+
+    <h2>Direitos do Usuário</h2>
+    <ul>
+        <li>Acesso e cópia dos dados pessoais</li>
+        <li>Correção de informações incorretas</li>
+        <li>Exclusão de dados pessoais</li>
+        <li>Revogação de consentimento</li>
+        <li>Limitação do processamento de dados</li>
+        <li>Informações sobre compartilhamento</li>
+    </ul>
+
+    <h2>Retenção de Dados</h2>
+    <p>Seus dados são mantidos apenas pelo tempo necessário para cumprir as finalidades descritas ou exigências legais. Após isso, serão excluídos ou anonimizados.</p>
+
+    <h2>Transferência Internacional de Dados</h2>
+    <p>Seus dados podem ser armazenados ou processados em outros países, sempre respeitando padrões de segurança equivalentes à legislação brasileira.</p>
+
+    <h2>Monitoramento e Auditoria</h2>
+    <p>Realizamos auditorias periódicas para garantir que as práticas de privacidade e segurança estejam sendo cumpridas corretamente.</p>
+
+    <h2>Proteção de Crianças</h2>
+    <p>Nosso site não é direcionado a menores de 13 anos. Informações de crianças são excluídas imediatamente caso sejam identificadas.</p>
+
+    <h2>Alterações na Política</h2>
+    <p>Esta política pode ser atualizada periodicamente. Mudanças significativas serão comunicadas por e-mail ou aviso no site.</p>
+
+    <h2>Contato</h2>
+    <p>Para dúvidas sobre privacidade e proteção de dados, entre em contato pelo e-mail: <a href="mailto:casadobolojard@gmail.com">casadobolojard@gmail.com</a>.</p>
+</div>

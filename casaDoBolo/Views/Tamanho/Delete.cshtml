@@ -1,0 +1,226 @@
+﻿@model casaDoBolo.Models.Tamanho
+
+@{
+    ViewData["Title"] = "Excluir Tamanho";
+}
+
+<style>
+    
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+    :root {
+        --primary-color: #800000; /* Vinho principal */
+        --salmon-hover: #E5A172; /* Salmão claro para hover */
+        --background-color: #f5f0e6; /* Cor de fundo creme */
+        --card-bg: #ffffff;
+        --text-color: #4a4a4a;
+        --text-detail: #666; 
+        --border-color: #e0e0e0;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        margin: 0;
+        padding-top: 50px;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    .center-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        padding: 0 20px;
+        animation: fadeIn 1s ease-out;
+    }
+
+    .card-custom {
+        max-width: 650px;
+        width: 100%;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        background-color: var(--primary-color);
+        color: #fff;
+        padding: 25px;
+        text-align: center;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        font-family: 'Playfair Display', serif;
+    }
+
+        .card-header-custom h2 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+
+    .card-body-custom {
+        padding: 30px;
+    }
+
+    .confirm-message {
+        color: var(--primary-color);
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 1.7rem;
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--primary-color);
+    }
+
+    
+
+    .dl-list {
+        padding: 0;
+        margin-bottom: 0;
+    }
+
+    .dl-label {
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 5px;
+        font-size: 1.05rem;
+        padding-top: 5px;
+        padding-bottom: 0px;
+    }
+
+    .dl-value {
+        margin-bottom: 20px;
+        color: var(--text-detail);
+        font-weight: 500;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-top: 5px;
+    }
+
+    .dl-list .row:last-child .dl-value {
+        border-bottom: none;
+        margin-bottom: 5px;
+        padding-bottom: 0;
+    }
+
+
+    
+
+    .btn-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+
+    .btn-delete-action {
+        background-color: var(--primary-color);
+        color: #fff;
+        padding: 10px 25px;
+        text-decoration: none;
+        font-weight: 700;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        cursor: pointer; 
+    }
+
+        .btn-delete-action:hover {
+            background-color: #660000;
+            color: var(--salmon-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+    .btn-back {
+        background-color: transparent;
+        color: var(--primary-color);
+        padding: 10px 25px;
+        font-weight: 600;
+        border: 2px solid var(--primary-color);
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+        .btn-back:hover {
+            background-color: var(--primary-color);
+            color: var(--card-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    /* Responsividade */
+    @@media (max-width: 576px) {
+        .btn-group {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-delete-action, .btn-back {
+            text-align: center;
+        }
+
+        .card-header-custom h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="center-wrapper">
+    <div class="card card-custom border-0">
+
+        <div class="card-header-custom">
+            <h2>@ViewData["Title"]</h2>
+        </div>
+
+        <div class="card-body-custom">
+            <h3 class="confirm-message">Tem certeza de que deseja excluir este tamanho?</h3>
+
+            <dl class="dl-list">
+                <div class="row">
+                    <dt class="col-sm-4 dl-label">@Html.DisplayNameFor(model => model.Fatias)</dt>
+                    <dd class="col-sm-8 dl-value">@Html.DisplayFor(model => model.Fatias) Fatias</dd>
+                </div>
+
+                <div class="row">
+                    <dt class="col-sm-4 dl-label">@Html.DisplayNameFor(model => model.Valor)</dt>
+                    <dd class="col-sm-8 dl-value" style="margin-bottom: 0; padding-bottom: 0;">
+                        R$ @Html.DisplayFor(model => model.Valor)
+                    </dd>
+                </div>
+            </dl>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="TamanhoID" />
+
+                <div class="btn-group">
+                    <a asp-action="Index" class="btn-back">Voltar para a Lista</a>
+                    <button type="submit" class="btn-delete-action">Excluir Tamanho</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

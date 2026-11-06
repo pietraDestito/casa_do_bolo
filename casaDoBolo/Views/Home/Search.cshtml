@@ -1,0 +1,291 @@
+﻿@{
+    ViewData["Title"] = "Resultados da Busca";
+}
+
+<style>
+   
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+    :root {
+        --primary-color: #800000; /* Vinho principal */
+        --salmon-hover: #E5A172; /* Salmão claro para hover */
+        --background-color: #f5f0e6; /* Cor de fundo creme */
+        --card-bg: #ffffff;
+        --text-color: #4a4a4a;
+        --text-detail: #2c2c2c;
+        --border-color: #e0e0e0;
+        --highlight-color: #ffd4b8; 
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-color);
+    }
+
+    
+
+    .search-header-container {
+        padding: 40px 0 30px 0;
+        border-bottom: 2px solid var(--border-color);
+        margin-bottom: 40px;
+    }
+
+    .display-5 {
+        color: var(--primary-color);
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .text-vinho {
+        color: var(--primary-color);
+    }
+
+    .text-destaque {
+        color: var(--primary-color); 
+    }
+
+    
+    .card-result-clean {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        margin-bottom: 2.5rem;
+        padding: 0;
+        overflow: hidden; 
+    }
+
+    
+    .section-header-clean {
+        padding: 1.25rem 1.5rem;
+        background-color: var(--background-color); 
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+    }
+
+        .section-header-clean h4 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-detail);
+        }
+
+    .section-icon-large {
+        font-size: 1.5rem;
+        color: var(--primary-color); 
+        margin-right: 15px;
+    }
+
+   
+    .list-item-clean {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #f7f7f7;
+        transition: background-color 0.2s;
+    }
+
+        .list-item-clean:last-child {
+            border-bottom: none;
+        }
+
+        .list-item-clean:hover {
+            background-color: #fafafa;
+        }
+
+        .list-item-clean a {
+            text-decoration: none;
+            color: var(--text-detail);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .list-item-clean a:hover .fw-bold {
+                color: var(--primary-color); 
+            }
+
+        .list-item-clean .item-content {
+            flex-grow: 1;
+        }
+
+        .list-item-clean .detail-text {
+            font-size: 0.9rem;
+            color: #777;
+            display: block;
+            margin-top: 3px;
+        }
+
+        .list-item-clean .detail-icon {
+            color: #ccc;
+            font-size: 1.2rem;
+        }
+
+    .highlight {
+        background-color: var(--highlight-color);
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-weight: 700 !important;
+        color: var(--text-detail) !important;
+    }
+
+  
+    .no-results-alert {
+        background-color: #fff0f0;
+        border: 1px solid #f7d4d4;
+        color: var(--primary-color);
+        font-weight: 500;
+        border-radius: 8px;
+    }
+
+</style>
+
+<div class="container mt-5">
+
+    <div class="search-header-container">
+        <h1 class="display-5">Resultados da Busca</h1>
+        <p class="lead text-muted">
+            Sua pesquisa por: <span class="text-destaque fw-bold" id="searchQueryDisplay">"@ViewBag.SearchQuery"</span>
+        </p>
+    </div>
+
+    @if (ViewBag.Pedidos?.Count > 0 || ViewBag.Clientes?.Count > 0 || ViewBag.Sabores?.Count > 0 || ViewBag.Tamanhos?.Count > 0)
+    {
+
+        @if (ViewBag.Pedidos?.Count > 0)
+        {
+            <div class="card card-result-clean">
+                <div class="section-header-clean">
+                    <i class="bi bi-receipt section-icon-large"></i>
+                    <h4 class="text-vinho">Pedidos Encontrados (@ViewBag.Pedidos.Count)</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var pedido in ViewBag.Pedidos)
+                    {
+                        <li class="list-group-item list-item-clean">
+                            <a asp-controller="Pedidos" asp-action="Details" asp-route-id="@pedido.PedidoID">
+                                <div class="item-content">
+                                    <span class="fw-bold result-item">Pedido #@pedido.PedidoID - Cliente: @pedido.Cliente.Nome</span>
+                                    <span class="detail-text result-item">Sabor: @pedido.Sabor.NomeSabor | Tamanho: @pedido.Tamanho.Fatias Fatias</span>
+                                </div>
+                                <i class="bi bi-chevron-right detail-icon"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (ViewBag.Clientes?.Count > 0)
+        {
+            <div class="card card-result-clean">
+                <div class="section-header-clean">
+                    <i class="bi bi-person-fill section-icon-large"></i>
+                    <h4 class="text-vinho">Clientes Encontrados (@ViewBag.Clientes.Count)</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var cliente in ViewBag.Clientes)
+                    {
+                        <li class="list-group-item list-item-clean">
+                            <a asp-controller="Clientes" asp-action="Details" asp-route-id="@cliente.ClienteID">
+                                <div class="item-content">
+                                    <span class="fw-bold result-item">@cliente.Nome</span>
+                                    <span class="detail-text result-item">Email: @cliente.Email | Telefone: @cliente.Telefone</span>
+                                </div>
+                                <i class="bi bi-chevron-right detail-icon"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="row">
+            @if (ViewBag.Sabores?.Count > 0)
+            {
+                <div class="col-lg-6">
+                    <div class="card card-result-clean">
+                        <div class="section-header-clean">
+                            <i class="bi bi-cake-fill section-icon-large"></i>
+                            <h4 class="text-vinho">Sabores (@ViewBag.Sabores.Count)</h4>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @foreach (var sabor in ViewBag.Sabores)
+                            {
+                                <li class="list-group-item list-item-clean">
+                                    <a asp-controller="Sabores" asp-action="Details" asp-route-id="@sabor.SaborID">
+                                        <div class="item-content">
+                                            <span class="fw-bold result-item">@sabor.NomeSabor</span>
+                                        </div>
+                                        <i class="bi bi-chevron-right detail-icon"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+
+            @if (ViewBag.Tamanhos?.Count > 0)
+            {
+                <div class="col-lg-6">
+                    <div class="card card-result-clean">
+                        <div class="section-header-clean">
+                            <i class="bi bi-rulers section-icon-large"></i>
+                            <h4 class="text-vinho">Tamanhos (@ViewBag.Tamanhos.Count)</h4>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @foreach (var tamanho in ViewBag.Tamanhos)
+                            {
+                                <li class="list-group-item list-item-clean">
+                                    <a asp-controller="Tamanhos" asp-action="Details" asp-route-id="@tamanho.TamanhoID">
+                                        <div class="item-content">
+                                            <span class="fw-bold result-item">@tamanho.Fatias</span> Fatias
+                                        </div>
+                                        <i class="bi bi-chevron-right detail-icon"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-search" style="font-size: 4rem; color: var(--primary-color);"></i>
+            <div class="alert mt-4 no-results-alert" role="alert">
+                Nenhum resultado encontrado para "<span class="fw-bold">@ViewBag.SearchQuery</span>".
+            </div>
+            <p class="text-muted mt-3">Tente buscar por termos mais específicos ou verifique a ortografia.</p>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function highlightSearchTerm() {
+            var query = "@ViewBag.SearchQuery";
+            if (!query) return;
+
+            var escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            var regex = new RegExp(escapedQuery, 'gi');
+
+            document.querySelectorAll('.list-item-clean a').forEach(function (element) {
+                element.querySelectorAll('.result-item, .detail-text').forEach(function (item) {
+                    var originalText = item.innerHTML;
+
+                    var newText = originalText.replace(regex, function (match) {
+                        return '<span class="highlight">' + match + '</span>';
+                    });
+
+                    item.innerHTML = newText;
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', highlightSearchTerm);
+    </script>
+}

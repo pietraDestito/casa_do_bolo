@@ -1,0 +1,325 @@
+﻿@model IEnumerable<casaDoBolo.Models.HistoricoMensalDetalhado> 
+@{
+    ViewData["Title"] = "Histórico de Vendas";
+
+    var nomeMeses = new Dictionary<int, string>
+    {
+        { 1, "Janeiro" }, { 2, "Fevereiro" }, { 3, "Março" }, { 4, "Abril" },
+        { 5, "Maio" }, { 6, "Junho" }, { 7, "Julho" }, { 8, "Agosto" },
+        { 9, "Setembro" }, { 10, "Outubro" }, { 11, "Novembro" }, { 12, "Dezembro" }
+    };
+
+    var vendasPorAno = Model
+        .OrderByDescending(v => v.Ano)
+        .ThenByDescending(v => v.Mes)
+        .GroupBy(v => v.Ano)
+        .ToList();
+}
+
+<style>
+    
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+    :root {
+        --primary-color: #800000; 
+        --salmon-hover: #E5A172;
+        --background-color: #f5f0e6;
+        --card-bg: #ffffff;
+        --text-color: #4a4a4a;
+        --border-color: #e0e0e0;
+        --header-bg: #800000;
+        --success-color: #28a745;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-color);
+        padding-top: 20px;
+        color: var(--text-color);
+    }
+
+   
+    .historico-container {
+        max-width: 900px;
+        margin: 50px auto;
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
+
+    .historico-header {
+        background-color: var(--header-bg);
+        color: #fff;
+        padding: 25px 30px;
+        text-align: center;
+    }
+
+    .historico-header h2 {
+        margin: 0;
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .table-historico {
+        width: 100%;
+        margin-bottom: 20px; 
+        border-collapse: collapse;
+    }
+
+    .table-historico th, .table-historico td {
+        padding: 15px 30px;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+        transition: background-color 0.2s;
+        cursor: default; 
+    }
+
+    .table-historico tbody tr:hover {
+        background-color: #fffcfc;
+    }
+
+    .table-historico thead th {
+        background-color: #f8f8f8;
+        color: var(--primary-color);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.95rem;
+        border-bottom: 2px solid var(--primary-color);
+    }
+
+    .ano-header {
+        background-color: #fff8f8; 
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding: 20px 30px 10px;
+        border-top: 2px solid var(--primary-color);
+    }
+
+    .ano-total-row {
+        background-color: #f0e6e6; 
+        font-weight: 700;
+        border-top: 3px solid var(--primary-color);
+    }
+
+    .valor-mes {
+        font-weight: 600;
+        color: var(--success-color);
+        font-size: 1.1rem;
+    }
+
+    .valor-ano { 
+        font-weight: 800;
+        color: var(--primary-color);
+        font-size: 1.2rem;
+    }
+
+    .btn-back {
+        display: inline-block;
+        margin: 25px 30px;
+        text-align: center;
+        background-color: transparent;
+        color: var(--primary-color);
+        padding: 12px 30px;
+        font-weight: 600;
+        border: 2px solid var(--primary-color);
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .btn-back:hover {
+        background-color: var(--primary-color);
+        color: var(--card-bg);
+        box-shadow: 0 4px 10px rgba(128, 0, 0, 0.3);
+    }
+
+    .footer-historico {
+        padding: 0 30px 20px;
+    }
+
+   
+
+    .expandable-row {
+        cursor: pointer;
+    }
+
+    .expand-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .expanded .expand-icon {
+        transform: rotate(90deg); 
+    }
+
+    .pedido-details-row {
+        background-color: #fcfcfc; 
+        display: none; 
+    }
+
+    .pedido-details {
+        padding: 15px 20px;
+        border-left: 4px solid var(--success-color);
+        margin-bottom: 8px;
+        background-color: #f7fff7;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .detail-header {
+        font-weight: 700;
+        color: var(--success-color);
+        border-bottom: 1px dashed #e0e0e0;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 1rem;
+    }
+
+    .detail-info {
+        font-size: 0.9rem;
+        color: var(--text-color);
+        margin-top: 3px;
+    }
+
+    .detail-info span {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+    
+    @@media (max-width: 768px) {
+        .table-historico th, .table-historico td {
+            padding: 10px 15px;
+            font-size: 0.85rem;
+        }
+
+        .historico-container {
+            margin: 20px 10px;
+        }
+
+        .historico-header h2 {
+            font-size: 1.8rem;
+        }
+
+        .valor-mes, .valor-ano {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="historico-container">
+    <div class="historico-header">
+        <h2> @ViewData["Title"]</h2>
+    </div>
+
+    @if (!vendasPorAno.Any())
+    {
+        <div class="text-center p-5" style="padding: 40px;">
+            <p style="font-size: 1.1rem; color: #888;">Nenhum registro de vendas acumuladas foi encontrado. Marque um pedido como entregue para iniciar o histórico!</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var anoGroup in vendasPorAno)
+        {
+            var totalAno = anoGroup.Sum(v => v.ValorVendidoMes);
+
+            <h3 class="ano-header">Ano: @anoGroup.Key</h3>
+
+            <table class="table-historico">
+                <thead>
+                    <tr>
+                        <th>Mês</th>
+                        <th class="text-right">Valor Vendido no Mês</th>
+                        <th class="text-right">Acumulado do Ano (Total)</th>
+                        <th>Detalhes</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in anoGroup.OrderBy(v => v.Mes)) 
+                    {
+                        var nomeMes = nomeMeses.ContainsKey(item.Mes) ? nomeMeses[item.Mes] : item.Mes.ToString();
+
+                        <tr class="expandable-row" data-mes="@item.Mes" data-ano="@item.Ano">
+                            <td>@nomeMes</td>
+                            <td class="valor-mes text-right">@item.ValorVendidoMes.ToString("C2")</td>
+                            <td></td> 
+                            <td><i class="fas fa-chevron-right expand-icon"></i></td> 
+                        </tr>
+
+                        <tr class="pedido-details-row details-mes-@item.Mes-@item.Ano">
+                            <td colspan="4"> 
+                                
+                                @if (item.PedidosEntregues != null && item.PedidosEntregues.Any())
+                                {
+                                    <div style="padding: 10px 0;">
+                                    @foreach (var pedido in item.PedidosEntregues)
+                                    {
+                                        <div class="pedido-details">
+                                            <div class="detail-header">
+                                                <span>Pedido #@pedido.PedidoID</span>
+                                                <span>@pedido.Tamanho.Valor.ToString("C2")</span>
+                                            </div>
+                                            <p class="detail-info"><span>Cliente:</span> @Html.DisplayFor(model => pedido.Cliente.Nome)</p>
+                                            <p class="detail-info"><span>Sabor:</span> @Html.DisplayFor(model => pedido.Sabor.NomeSabor) (@Html.DisplayFor(model => pedido.Tamanho.Fatias) fatias)</p>
+                                            <p class="detail-info"><span>Entregue em:</span> @Html.DisplayFor(model => pedido.DataEntrega)</p>
+                                        </div>
+                                    }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="text-center" style="color: #888;">Nenhum pedido entregue registrado para este mês.</p>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                    <tr class="ano-total-row">
+                        <td></td> 
+                        <td class="text-right">Total @anoGroup.Key:</td>
+                        <td class="valor-ano text-right" colspan="2">@totalAno.ToString("C2")</td> 
+                    </tr>
+                </tbody>
+            </table>
+        }
+    }
+
+    <div class="footer-historico">
+        <a asp-controller="Pedido" asp-action="Index" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Voltar para a Lista de Pedidos
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const expandableRows = document.querySelectorAll('.expandable-row');
+
+            expandableRows.forEach(row => {
+                row.addEventListener('click', function () {
+                    const mes = this.getAttribute('data-mes');
+                    const ano = this.getAttribute('data-ano');
+                    const detailsRow = document.querySelector(`.details-mes-${mes}-${ano}`);
+                    const icon = this.querySelector('.expand-icon');
+
+                    if (detailsRow.style.display === 'table-row') {
+                        detailsRow.style.display = 'none';
+                        this.classList.remove('expanded');
+                    } else {
+                        
+                        detailsRow.style.display = 'table-row';
+                        this.classList.add('expanded');
+                    }
+                });
+            });
+        });
+    </script>
+}
