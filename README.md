@@ -47,9 +47,9 @@ O sistema cobre as operações de cadastro, consulta, edição e remoção (CRUD
 
 - **Pedidos:** registro, consulta, atualização e acompanhamento de pedidos da loja.
 - **Clientes:** cadastro, consulta, edição e gerenciamento dos dados de clientes.
-- **Sabores e tamanhos *(Administrador(a))*: ** CRUD de sabores (incluindo upload de imagem salvo no banco) e tamanhos disponíveis.
+- **Sabores e tamanhos (Administrador(a)):** CRUD de sabores (incluindo upload de imagem salvo no banco) e tamanhos disponíveis.
 - **Histórico de vendas:** visualização e acompanhamento das vendas registradas no sistema.
-- **Usuários e perfis *(Administrador(a))*: ** criação de contas internas e definição de perfis (`Administrador(a)` e `Funcionário(a)`).
+- **Usuários e perfis (Administrador(a)):** criação de contas internas e definição de perfis (`Administrador(a)` e `Funcionário(a)`).
 
 ## Observações
 
