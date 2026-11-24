@@ -1,5 +1,5 @@
 # Casa do Bolo
-
+![Tela inicial do sistema Casa do Bolo](docs/index.png)
 Sistema de gerenciamento interno de uma loja de bolos (TCC). Controle de pedidos, clientes, sabores e tamanhos, com histórico de vendas. O acesso é restrito à equipe da loja: não existe cadastro público, as contas são criadas pelo administrador.
 
 ## Tecnologias
@@ -47,11 +47,20 @@ O sistema cobre as operações de cadastro, consulta, edição e remoção (CRUD
 
 - **Pedidos:** registro, consulta, atualização e acompanhamento de pedidos da loja.
 - **Clientes:** cadastro, consulta, edição e gerenciamento dos dados de clientes.
-- **Sabores e tamanhos (Administrador(a)):** CRUD de sabores (incluindo upload de imagem salvo no banco) e tamanhos disponíveis.
+- **Sabores e tamanhos *(Administrador(a))*:** CRUD de sabores (incluindo upload de imagem salvo no banco) e tamanhos disponíveis.
 - **Histórico de vendas:** visualização e acompanhamento das vendas registradas no sistema.
-- **Usuários e perfis (Administrador(a)):** criação de contas internas e definição de perfis (`Administrador(a)` e `Funcionário(a)`).
+- **Usuários e perfis *(Administrador(a))*:** criação de contas internas e definição de perfis (`Administrador(a)` e `Funcionário(a)`).
 
 ## Observações
 
 - As fotos dos sabores são salvas dentro do banco de dados. Um banco novo começa sem sabores: cadastre-os pela tela **Sabor** (como administrador) e escolha as imagens da pasta `docs/imagens-sabores`, que traz as fotos de exemplo para o upload.
 - A senha precisa ter no mínimo 6 caracteres, com letra maiúscula, minúscula, número e símbolo.
+
+## Exemplos de telas (módulo de Pedidos)
+
+Capturas focadas apenas no fluxo da tabela de **Pedidos** e validações relacionadas:
+
+![Registro de pedido](docs/registroPedido.png)
+![Histórico de vendas](docs/historicoVendas.png)
+![Alerta de prazo curto](docs/alertaPedido.png)
+![Alerta de horário indisponível](docs/alertaPedido2.png)
